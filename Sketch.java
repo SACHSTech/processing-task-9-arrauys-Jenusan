@@ -19,14 +19,15 @@ public class Sketch extends PApplet {
     boolean leftPressed = false;
     boolean rightPressed = false;
 
+    boolean GameOver;
+
     // initializes counter for heros lives 
     int counter = 3;
 
     PImage hero;
     PImage villain;
     PImage Heart;
-
-    
+    PImage End;    
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -44,6 +45,9 @@ public class Sketch extends PApplet {
 
     Heart = loadImage("Heart.png");
     Heart.resize(100,100);
+
+    End = loadImage("End.png");
+    End.resize(800,800);
   }
 
   /** 
@@ -57,8 +61,6 @@ public class Sketch extends PApplet {
     // fills arrays with random values for X and Y positions 
     for (int i = 0; i < CircleX.length; i++){
         CircleX[i] = (int)random(0,800);
-    }
-    for (int i = 0; i < CircleY.length; i++){
         CircleY[i] = (int)random(0,200);
     }
   }
@@ -120,13 +122,30 @@ public class Sketch extends PApplet {
           if ((CircleX[i] - 100 < heroX  && CircleX[i] + 50 > heroX) && (CircleY[i] - 100 < heroY && CircleY[i] + 50 > heroY)){
             CircleY[i] = 0;
             counter--;
-          }
+          } 
         }
-
 
         // if counter reaches lower than 0 game is cut and end screen is shown 
         if (counter <= 0){
-          background(255);
+          image(End, 0, 0);
+          fill(0);
+          rect(65,450,300,250);
+          textSize(75);
+          fill(255);
+          text(" PLAY\nAGAIN", 85, 550);
+          if (mousePressed){
+            if((65 < mouseX && mouseX < 365) && (450 < mouseY && mouseY < 700)){
+              counter = 3;
+              heroX = 400;
+              heroY = 700;
+              for (int y = 0; y < CircleY.length; y++){
+                CircleY[y] = 0;
+                ballHideStatus[y] = false;
+                CircleY[y] = (int)random(0,200);
+                CircleX[y] = (int)random(0,800);
+              }
+            }
+          }
         }
       }
 
@@ -134,8 +153,7 @@ public class Sketch extends PApplet {
       for (int x = 0; x < counter; x++){
         image(Heart, x * 80, 700);
       }
-
-      }
+      } 
 
       // method to run each time keys are pressed to check what key is pressed and operate on boolean values 
       public void keyPressed() {
