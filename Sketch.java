@@ -30,6 +30,7 @@ public class Sketch extends PApplet {
     PImage End;   
     PImage Win; 
     PImage Open;
+    PImage boink;
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -47,6 +48,9 @@ public class Sketch extends PApplet {
 
     Heart = loadImage("Heart.png");
     Heart.resize(100,100);
+
+    boink = loadImage("boink.png");
+    boink.resize(100,100);
 
     End = loadImage("End.png");
     End.resize(800,800);
@@ -130,6 +134,7 @@ public class Sketch extends PApplet {
         if (mousePressed){
           if ((CircleX[i] < mouseX && CircleX[i] + 50 > mouseX) && (CircleY[i] < mouseY && CircleY[i] + 50 > mouseY)){
             ballHideStatus[i] = true;
+            image(boink, mouseX - 100, mouseY - 50);
           }
           }
 
