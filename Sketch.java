@@ -1,4 +1,3 @@
-import org.w3c.dom.Text;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -12,6 +11,10 @@ public class Sketch extends PApplet {
     // initializing posiiton of hero 
     int heroX = 400;
     int heroY = 700;
+
+    // initializes counter for heros lives 
+    int counter = 3;
+    int GameStart = 0;
     
     // initializing movemement booleans for hero
     boolean upPressed = false;
@@ -21,13 +24,12 @@ public class Sketch extends PApplet {
 
     boolean GameOver;
 
-    // initializes counter for heros lives 
-    int counter = 3;
-
     PImage hero;
     PImage villain;
     PImage Heart;
-    PImage End;    
+    PImage End;   
+    PImage Win; 
+    PImage Open;
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -48,6 +50,12 @@ public class Sketch extends PApplet {
 
     End = loadImage("End.png");
     End.resize(800,800);
+
+    Win = loadImage("Win.png");
+    Win.resize(800,800);
+
+    Open = loadImage("Open.png");
+    Open.resize(800,800);
   }
 
   /** 
@@ -60,7 +68,7 @@ public class Sketch extends PApplet {
 
     // fills arrays with random values for X and Y positions 
     for (int i = 0; i < CircleX.length; i++){
-        CircleX[i] = (int)random(0,800);
+        CircleX[i] = (int)random(0,750);
         CircleY[i] = (int)random(0,200);
     }
   }
@@ -71,6 +79,14 @@ public class Sketch extends PApplet {
   public void draw() {
     // replaces backround each time draw method is ran 
     background(210, 255, 173);
+
+    if (mousePressed){
+      GameStart++;
+    }
+
+    if (GameStart == 0){
+      image(Open, 0, 0);
+    }else{
 
     //triggers if key is pressed, and checks which akey is pressed and which direction to move the hero in 
     if (keyPressed){
@@ -106,7 +122,8 @@ public class Sketch extends PApplet {
 
         // if villain entities get off the screen they are sent back to the top 
         if (CircleY[i] > 775){
-            CircleY[i] = 0;
+        CircleX[i] = (int)random(0,750);
+        CircleY[i] = (int)random(0,100);
         }
 
         // if mouse is pressed on one of the villain entities boolean array will be set to true 
@@ -142,7 +159,7 @@ public class Sketch extends PApplet {
                 CircleY[y] = 0;
                 ballHideStatus[y] = false;
                 CircleY[y] = (int)random(0,200);
-                CircleX[y] = (int)random(0,800);
+                CircleX[y] = (int)random(0,750);
               }
             }
           }
@@ -153,7 +170,23 @@ public class Sketch extends PApplet {
       for (int x = 0; x < counter; x++){
         image(Heart, x * 80, 700);
       }
-      } 
+
+      if (ballHideStatus[0] && ballHideStatus[1] && ballHideStatus[2] && ballHideStatus[3] && ballHideStatus[4] && ballHideStatus[5] && ballHideStatus[6] && ballHideStatus[7]){
+        image(Win, 0, 0);
+        if (key == ' '){
+            counter = 3;
+              heroX = 400;
+              heroY = 700;
+              for (int y = 0; y < CircleY.length; y++){
+                CircleY[y] = 0;
+                ballHideStatus[y] = false;
+                CircleY[y] = (int)random(0,200);
+                CircleX[y] = (int)random(0,750);
+              }
+        }
+      }
+    }
+  }
 
       // method to run each time keys are pressed to check what key is pressed and operate on boolean values 
       public void keyPressed() {
