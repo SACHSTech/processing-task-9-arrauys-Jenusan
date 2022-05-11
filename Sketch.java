@@ -3,27 +3,30 @@ import processing.core.PImage;
 
 public class Sketch extends PApplet {
 
+
+    int Ent = 10;
     // initializing array values to be empty with a length of 8 values 
-    int[] CircleY = new int[8];
-    int[] CircleX = new int[8];
-    boolean[] ballHideStatus = new boolean[8];
+    int[] CircleY = new int[Ent];
+    int[] CircleX = new int[Ent];
+    boolean[] ballHideStatus = new boolean[Ent];
 
     // initializing posiiton of hero 
     int heroX = 400;
     int heroY = 700;
 
-    // initializes counter for heros lives 
+    // initializes counters
     int counter = 3;
     int GameStart = 0;
+    int GameEndCount;
     
-    // initializing movemement booleans for hero
+    // initializing booleans
     boolean upPressed = false;
     boolean downPressed = false;
     boolean leftPressed = false;
     boolean rightPressed = false;
-
     boolean GameOver;
 
+    // initializes the loading of images
     PImage hero;
     PImage villain;
     PImage Heart;
@@ -31,6 +34,7 @@ public class Sketch extends PApplet {
     PImage Win; 
     PImage Open;
     PImage boink;
+    PImage Back;
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -60,6 +64,9 @@ public class Sketch extends PApplet {
 
     Open = loadImage("Open.png");
     Open.resize(800,800);
+
+    Back = loadImage("Back.png");
+    Back.resize(800,800);
   }
 
   /** 
@@ -68,7 +75,7 @@ public class Sketch extends PApplet {
    */
   public void setup() {
     // sets backround 
-    background(210, 255, 173);
+    image(Back, 0, 0);
 
     // fills arrays with random values for X and Y positions 
     for (int i = 0; i < CircleX.length; i++){
@@ -82,11 +89,11 @@ public class Sketch extends PApplet {
    */
   public void draw() {
     // replaces backround each time draw method is ran 
-    background(210, 255, 173);
+    image(Back, 0, 0);
 
     if (mousePressed){
-      GameStart++;
-    }
+          GameStart++;
+      }
 
     if (GameStart == 0){
       image(Open, 0, 0);
@@ -130,6 +137,18 @@ public class Sketch extends PApplet {
         CircleY[i] = (int)random(0,100);
         }
 
+        // if hero moves off of screen it gets recentered 
+        if (heroX < 0 || heroX > 700 || heroY > 750){
+         heroX = 400;
+         heroY = 700;
+        }
+        // if hero moves to top of screen, it gets recentered to middle and gains an extra life 
+        if (heroY < 0){
+          heroX = 400;
+          heroY = 700;
+          counter++;
+        }
+
         // if mouse is pressed on one of the villain entities boolean array will be set to true 
         if (mousePressed){
           if ((CircleX[i] < mouseX && CircleX[i] + 50 > mouseX) && (CircleY[i] < mouseY && CircleY[i] + 50 > mouseY)){
@@ -147,7 +166,7 @@ public class Sketch extends PApplet {
           } 
         }
 
-        // if counter reaches lower than 0 game is cut and end screen is shown 
+        // if counter reaches lower than 0 game is cut and end screen is shown to press to play again 
         if (counter <= 0){
           image(End, 0, 0);
           fill(0);
@@ -176,7 +195,15 @@ public class Sketch extends PApplet {
         image(Heart, x * 80, 700);
       }
 
-      if (ballHideStatus[0] && ballHideStatus[1] && ballHideStatus[2] && ballHideStatus[3] && ballHideStatus[4] && ballHideStatus[5] && ballHideStatus[6] && ballHideStatus[7]){
+
+      // checks if all ballhide statuses are set to true 
+      for (int x = 0; x < CircleX.length; x++){
+        if (ballHideStatus[x]){
+          GameEndCount ++;
+        }
+      }
+      // if all all ball hide statuses are true, end screen will be shown 
+      if (GameEndCount == CircleX.length){
         image(Win, 0, 0);
         if (key == ' '){
             counter = 3;
@@ -191,6 +218,7 @@ public class Sketch extends PApplet {
         }
       }
     }
+    GameEndCount = 0;
   }
 
       // method to run each time keys are pressed to check what key is pressed and operate on boolean values 
@@ -224,6 +252,4 @@ public class Sketch extends PApplet {
           rightPressed = false;
         }
       }
-
-
 }
