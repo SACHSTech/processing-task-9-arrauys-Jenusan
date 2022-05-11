@@ -6,25 +6,24 @@ public class Sketch extends PApplet {
 
     int Ent = 10;
     // initializing array values to be empty with a length of 8 values 
-    int[] CircleY = new int[Ent];
-    int[] CircleX = new int[Ent];
-    boolean[] ballHideStatus = new boolean[Ent];
+    int[] intCircleY = new int[Ent];
+    int[] intCircleX = new int[Ent];
+    boolean[] blnBallHideStatus = new boolean[Ent];
 
     // initializing posiiton of hero 
-    int heroX = 400;
-    int heroY = 700;
+    int intHeroX = 400;
+    int intHeroY = 700;
 
     // initializes counters
-    int counter = 3;
-    int GameStart = 0;
-    int GameEndCount;
+    int intCounter = 3;
+    int intGameStart = 0;
+    int intGameEndCount;
     
     // initializing booleans
-    boolean upPressed = false;
-    boolean downPressed = false;
-    boolean leftPressed = false;
-    boolean rightPressed = false;
-    boolean GameOver;
+    boolean blnUpPressed = false;
+    boolean blnDownPressed = false;
+    boolean blnLeftPressed = false;
+    boolean blnRightPressed = false;
 
     // initializes the loading of images
     PImage hero;
@@ -78,9 +77,9 @@ public class Sketch extends PApplet {
     image(Back, 0, 0);
 
     // fills arrays with random values for X and Y positions 
-    for (int i = 0; i < CircleX.length; i++){
-        CircleX[i] = (int)random(0,750);
-        CircleY[i] = (int)random(0,200);
+    for (int i = 0; i < intCircleX.length; i++){
+      intCircleX[i] = (int)random(0,750);
+        intCircleY[i] = (int)random(0,200);
     }
   }
 
@@ -92,82 +91,82 @@ public class Sketch extends PApplet {
     image(Back, 0, 0);
 
     if (mousePressed){
-          GameStart++;
+      intGameStart++;
       }
 
-    if (GameStart == 0){
+    if (intGameStart == 0){
       image(Open, 0, 0);
     }else{
 
     //triggers if key is pressed, and checks which akey is pressed and which direction to move the hero in 
     if (keyPressed){
-      if (upPressed) {
-        heroY-=3;
+      if (blnUpPressed) {
+        intHeroY-=3;
       }
-      if (downPressed) {
-        heroY+=3;
+      if (blnDownPressed) {
+        intHeroY+=3;
       }
-      if (leftPressed) {
-        heroX-=3;
+      if (blnLeftPressed) {
+        intHeroX-=3;
       }
-      if (rightPressed) {
-        heroX+=3;
+      if (blnRightPressed) {
+        intHeroX+=3;
       }
     }
     // produces image of hero on the screen 
-      image(hero,heroX,heroY);
+      image(hero,intHeroX,intHeroY);
     
 
       // for loop to operate the villain entities 
-      for (int i = 0; i < CircleX.length; i++){
+      for (int i = 0; i < intCircleX.length; i++){
 
         // if down or up arrows are pressed, the speed of the villains changes 
           if (keyPressed){
             if (keyCode == DOWN){
-              CircleY[i]++;
+              intCircleY[i]++;
             }else if (keyCode == UP){
-                CircleY[i]--; 
+              intCircleY[i]--; 
             }
         }
-        CircleY[i]+= 2;
+        intCircleY[i]+= 2;
 
         // if villain entities get off the screen they are sent back to the top 
-        if (CircleY[i] > 775){
-        CircleX[i] = (int)random(0,750);
-        CircleY[i] = (int)random(0,100);
+        if (intCircleY[i] > 775){
+        intCircleX[i] = (int)random(0,750);
+        intCircleY[i] = (int)random(0,100);
         }
 
         // if hero moves off of screen it gets recentered 
-        if (heroX < 0 || heroX > 700 || heroY > 750){
-         heroX = 400;
-         heroY = 700;
+        if (intHeroX < 0 || intHeroX > 700 || intHeroY > 750){
+        intHeroX = 400;
+        intHeroY = 700;
         }
         // if hero moves to top of screen, it gets recentered to middle and gains an extra life 
-        if (heroY < 0){
-          heroX = 400;
-          heroY = 700;
-          counter++;
+        if (intHeroY < 0){
+          intHeroX = 400;
+          intHeroY = 700;
+          intCounter++;
         }
 
         // if mouse is pressed on one of the villain entities boolean array will be set to true 
         if (mousePressed){
-          if ((CircleX[i] < mouseX && CircleX[i] + 50 > mouseX) && (CircleY[i] < mouseY && CircleY[i] + 50 > mouseY)){
-            ballHideStatus[i] = true;
+          if ((intCircleX[i] < mouseX && intCircleX[i] + 50 > mouseX) && (intCircleY[i] < mouseY && intCircleY[i] + 50 > mouseY)){
+            blnBallHideStatus[i] = true;
             image(boink, mouseX - 100, mouseY - 50);
           }
           }
 
           // if boolean array value is false, entitiy will be printed onto screen, if array is true, it will not 
-        if (ballHideStatus[i] == false){
-          image(villain, CircleX[i], CircleY[i]);
-          if ((CircleX[i] - 100 < heroX  && CircleX[i] + 50 > heroX) && (CircleY[i] - 100 < heroY && CircleY[i] + 50 > heroY)){
-            CircleY[i] = 0;
-            counter--;
+        if (blnBallHideStatus[i] == false){
+          image(villain, intCircleX[i], intCircleY[i]);
+          if ((intCircleX[i] - 100 < intHeroX  && intCircleX[i] + 50 > intHeroX) && (intCircleY[i] - 100 < intHeroY && intCircleY[i] + 50 > intHeroY)){
+            intCircleY[i] = 0;
+            intCounter--;
           } 
         }
 
         // if counter reaches lower than 0 game is cut and end screen is shown to press to play again 
-        if (counter <= 0){
+        if (intCounter <= 0){
           image(End, 0, 0);
           fill(0);
           rect(65,450,300,250);
@@ -176,14 +175,14 @@ public class Sketch extends PApplet {
           text(" PLAY\nAGAIN", 85, 550);
           if (mousePressed){
             if((65 < mouseX && mouseX < 365) && (450 < mouseY && mouseY < 700)){
-              counter = 3;
-              heroX = 400;
-              heroY = 700;
-              for (int y = 0; y < CircleY.length; y++){
-                CircleY[y] = 0;
-                ballHideStatus[y] = false;
-                CircleY[y] = (int)random(0,200);
-                CircleX[y] = (int)random(0,750);
+              intCounter = 3;
+              intHeroX = 400;
+              intHeroY = 700;
+              for (int y = 0; y < intCircleY.length; y++){
+                intCircleY[y] = 0;
+                blnBallHideStatus[y] = false;
+                intCircleY[y] = (int)random(0,200);
+                intCircleX[y] = (int)random(0,750);
               }
             }
           }
@@ -191,65 +190,65 @@ public class Sketch extends PApplet {
       }
 
       // prints a heart on screen as many times as the counter indicates 
-      for (int x = 0; x < counter; x++){
+      for (int x = 0; x < intCounter; x++){
         image(Heart, x * 80, 700);
       }
 
 
       // checks if all ballhide statuses are set to true 
-      for (int x = 0; x < CircleX.length; x++){
-        if (ballHideStatus[x]){
-          GameEndCount ++;
+      for (int x = 0; x < intCircleX.length; x++){
+        if (blnBallHideStatus[x]){
+          intGameEndCount ++;
         }
       }
       // if all all ball hide statuses are true, end screen will be shown 
-      if (GameEndCount == CircleX.length){
+      if (intGameEndCount == intCircleX.length){
         image(Win, 0, 0);
         if (key == ' '){
-            counter = 3;
-              heroX = 400;
-              heroY = 700;
-              for (int y = 0; y < CircleY.length; y++){
-                CircleY[y] = 0;
-                ballHideStatus[y] = false;
-                CircleY[y] = (int)random(0,200);
-                CircleX[y] = (int)random(0,750);
+          intCounter = 3;
+            intHeroX = 400;
+            intHeroY = 700;
+              for (int y = 0; y < intCircleY.length; y++){
+                intCircleY[y] = 0;
+                blnBallHideStatus[y] = false;
+                intCircleY[y] = (int)random(0,200);
+                intCircleX[y] = (int)random(0,750);
               }
         }
       }
     }
-    GameEndCount = 0;
+    intGameEndCount = 0;
   }
 
       // method to run each time keys are pressed to check what key is pressed and operate on boolean values 
       public void keyPressed() {
         if (key == 'w') {
-          upPressed = true;
+          blnUpPressed = true;
         }
         else if (key == 's') {
-          downPressed = true;
+          blnDownPressed = true;
         }
         else if (key == 'a') {
-          leftPressed = true;
+          blnLeftPressed = true;
         }
         else if (key == 'd') {
-          rightPressed = true;
+          blnRightPressed = true;
         }
       }
       
         // method to run each time keys are released to check what key is released and operate on boolean values 
       public void keyReleased() {
         if (key == 'w') {
-          upPressed = false;
+          blnUpPressed = false;
         }
         else if (key == 's') {
-          downPressed = false;
+          blnDownPressed = false;
         }
         else if (key == 'a') {
-          leftPressed = false;
+          blnLeftPressed = false;
         }
         else if (key == 'd') {
-          rightPressed = false;
+          blnRightPressed = false;
         }
       }
 }
