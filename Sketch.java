@@ -1,8 +1,13 @@
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Sketch extends PApplet {
+/**
+ * code to play a game where you control the hero and naviagte your way to dodge the enemies, and clicking them to make them disapear
+ * @author: Jenusan Y
+ *
+ */
 
+public class Sketch extends PApplet {
 
     int Ent = 10;
     // initializing array values to be empty with a length of 8 values 
